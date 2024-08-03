@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/socialbot-service/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/socialbot-service/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/socialbot-service",
+  "projects": {
+    "socialbot-service": {
+      "type": "application",
+      "root": "apps/socialbot-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/socialbot-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/socialbot-service/tsconfig.app.json"
+      }
+    },
+    "user-service": {
+      "type": "application",
+      "root": "apps/user-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/user-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/user-service/tsconfig.app.json"
+      }
+    },
+    "post-service": {
+      "type": "application",
+      "root": "apps/post-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/post-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/post-service/tsconfig.app.json"
+      }
+    },
+    "auth": {
+      "type": "library",
+      "root": "libs/auth",
+      "entryFile": "index",
+      "sourceRoot": "libs/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/auth/tsconfig.lib.json"
+      }
+    }
+  }
+}
