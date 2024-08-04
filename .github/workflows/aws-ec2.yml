@@ -61,7 +61,8 @@ jobs:
           fi
           cd $PROJECT_DIR
           sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/socialbot-service:latest
-          echo "version: '3'
+          cat << 'EOD' > docker-compose.yml
+          version: '3'
           services:
             api:
               image: ${{ secrets.DOCKER_HUB_USERNAME }}/socialbot-service:latest
@@ -100,7 +101,7 @@ jobs:
                 - '5050:80'
               depends_on:
                 - db
-          ' > docker-compose.yml
+          EOD
           sudo docker-compose down
           sudo docker-compose up --build -d
         EOF
