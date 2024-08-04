@@ -16,7 +16,6 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/socialbot-service/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "format": "prettier --write 'src/**/*.{js,ts,json,css,md}'"
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
