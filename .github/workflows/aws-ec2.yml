@@ -49,14 +49,58 @@ jobs:
       env:
         HOST: ${{ secrets.EC2_HOST_IP }}  # Replace with your Elastic IP
         USER: ubuntu  # Replace with your EC2 username
+        PROJECT_DIR: /home/ubuntu/socialbot
       run: |
         ssh -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
           sudo apt update
           sudo apt install -y docker.io docker-compose
           sudo systemctl start docker
           sudo systemctl enable docker
+          if [ ! -d "$PROJECT_DIR" ]; then
+            mkdir -p $PROJECT_DIR
+          fi
+          cd $PROJECT_DIR
           sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/socialbot-service:latest
-          cd /path/to/your/project
+          echo "version: '3'
+          services:
+            api:
+              image: ${{ secrets.DOCKER_HUB_USERNAME }}/socialbot-service:latest
+              ports:
+                - '3000:3000'
+            user-service:
+              image: ${{ secrets.DOCKER_HUB_USERNAME }}/socialbot-service:latest
+              ports:
+                - '3001:3001'
+            post-service:
+              image: ${{ secrets.DOCKER_HUB_USERNAME }}/socialbot-service:latest
+              ports:
+                - '3002:3002'
+            db:
+              image: postgres
+              environment:
+                POSTGRES_USER: postgres
+                POSTGRES_PASSWORD: postgres
+                POSTGRES_DB: socialbot
+              volumes:
+                - ./pgdata:/var/lib/postgresql/data
+              ports:
+                - '5432:5432'
+            redis:
+              image: redis:latest
+              ports:
+                - '6379:6379'
+              volumes:
+                - ./tmp/redis_data:/data
+            pgadmin:
+              image: dpage/pgadmin4
+              environment:
+                PGADMIN_DEFAULT_EMAIL: admin@admin.com
+                PGADMIN_DEFAULT_PASSWORD: pgadmin4
+              ports:
+                - '5050:80'
+              depends_on:
+                - db
+          ' > docker-compose.yml
           sudo docker-compose down
           sudo docker-compose up --build -d
         EOF
