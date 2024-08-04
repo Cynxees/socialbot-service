@@ -40,23 +40,32 @@ jobs:
         curl -fsSL https://bun.sh/install | bash
         echo 'export BUN_INSTALL="$HOME/.bun"' >> $GITHUB_ENV
         echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> $GITHUB_ENV
-        source ~/.bashrc
+        echo 'source $HOME/.bashrc' >> $GITHUB_ENV
+        source $HOME/.bashrc
         source $GITHUB_ENV
         bun --version
 
     - name: Install dependencies
-      run: bun install
+      run: |
+        source $HOME/.bashrc
+        bun install
 
     - name: Lint code
-      run: bun run lint
+      run: |
+        source $HOME/.bashrc
+        bun run lint
 
     - name: Build the project
-      run: bun run build
+      run: |
+        source $HOME/.bashrc
+        bun run build
 
     - name: Run tests
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/socialbot
-      run: bun run test
+      run: |
+        source $HOME/.bashrc
+        bun run test
 
   codeql:
     name: "CodeQL"
