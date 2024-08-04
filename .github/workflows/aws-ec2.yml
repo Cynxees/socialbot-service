@@ -36,9 +36,8 @@ jobs:
           cd $PROJECT_DIR
           if [ ! -d ".git" ]; then
             git clone $REPO_URL .
-          else
-            git pull origin main
           fi
+          git pull origin master
           sudo docker-compose down
           sudo docker-compose up --build -d
         EOF
