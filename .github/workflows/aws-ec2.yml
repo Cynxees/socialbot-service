@@ -21,7 +21,7 @@ jobs:
     - name: Deploy to EC2
       env:
         HOST: 52.74.240.16
-        USER: ec2-user
+        USER: ubuntu
       run: |
         ssh -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
           cd /path/to/your/project
