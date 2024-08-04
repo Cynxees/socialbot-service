@@ -23,6 +23,7 @@ jobs:
         HOST: 52.74.240.16  # Replace with your Elastic IP
         USER: ubuntu  # Replace with your EC2 username
         PROJECT_DIR: /home/ec2-user/socialbot  # Replace with your actual project directory
+        REPO_URL: git@github.com:Cynxees/socialbot-service.git  # Replace with your actual repository URL
       run: |
         ssh -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
           sudo apt update
@@ -31,10 +32,13 @@ jobs:
           sudo systemctl enable docker
           if [ ! -d "$PROJECT_DIR" ]; then
             mkdir -p $PROJECT_DIR
-            git clone git@github.com:your-repo.git $PROJECT_DIR
           fi
           cd $PROJECT_DIR
-          git pull origin main
+          if [ ! -d ".git" ]; then
+            git clone $REPO_URL .
+          else
+            git pull origin main
+          fi
           sudo docker-compose down
           sudo docker-compose up --build -d
         EOF
