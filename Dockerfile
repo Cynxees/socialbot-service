@@ -29,8 +29,7 @@ CMD ["bun", "dist/main.js"]
 
 # development environment
 FROM base AS dev
-COPY package.json bun.lockb ./
+COPY bun.lockb package.json ./
 RUN bun install --frozen-lockfile
-RUN bun add nodemon --dev
 COPY . .
-CMD ["bun", "run", "nodemon", "-L", "--watch", "src", "--exec", "bun", "run", "start:dev"]
+CMD ["bun", "run", "start:dev"]
