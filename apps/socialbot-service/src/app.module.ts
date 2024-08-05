@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -16,6 +17,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
       autoLoadEntities: true,
     }),
+    ClientsModule.register({
+      clients: [
+        {
+          name: 'CLIENT_1',
+          transport: Transport.TCP,
+        },
+        {
+          name: 'CLIENT_2',
+          transport: Transport.TCP,
+        }
+      ]
+    })
   ],
   controllers: [AppController],
   providers: [AppService],
